@@ -12,7 +12,7 @@ export default function CTISoftphone() {
   const [number, setNumber] = useState('')
   const [calling, setCalling] = useState(false)
   const [activeSid, setActiveSid] = useState<string | null>(null)
-  const [stats, setStats] = useState({ calls_today: 0, duration_today: 0, active: 0 })
+  const [stats, setStats] = useState({ calls_today: 0, active: 0 })
 
   const loadStats = async () => {
     try {
@@ -20,11 +20,10 @@ export default function CTISoftphone() {
         api.get('/api/dashboard/monthly-trend'),
         api.get('/api/cti/active-calls'),
       ])
-      setStats((s) => ({
-        ...s,
+      setStats({
         calls_today: trendRes.data.calls_today ?? 0,
         active: activeRes.data.length,
-      }))
+      })
     } catch { /* ignore */ }
   }
 
@@ -60,12 +59,6 @@ export default function CTISoftphone() {
     } catch { /* ignore */ }
   }
 
-  const formatDuration = (secs: number) => {
-    const h = Math.floor(secs / 3600)
-    const m = Math.floor((secs % 3600) / 60)
-    return h > 0 ? `${h}h ${m}m` : `${m}m`
-  }
-
   return (
     <div className="cti-panel">
       <div className="cti-panel-header">
@@ -74,7 +67,6 @@ export default function CTISoftphone() {
         <span className="status-pill">Available</span>
       </div>
 
-      {/* Display */}
       <div className="cti-display">
         <input
           value={number}
@@ -89,7 +81,6 @@ export default function CTISoftphone() {
         )}
       </div>
 
-      {/* Keypad */}
       <div className="cti-keypad">
         {KEYS.map((k) => (
           <button key={k.main} className="cti-key" onClick={() => press(k.main)}>
@@ -99,7 +90,6 @@ export default function CTISoftphone() {
         ))}
       </div>
 
-      {/* Call / Hangup button */}
       {activeSid ? (
         <button className="cti-call-btn calling" onClick={hangup}>
           <i className="bi bi-telephone-x-fill"></i> End Call
@@ -111,7 +101,6 @@ export default function CTISoftphone() {
         </button>
       )}
 
-      {/* Today's Stats */}
       <div className="cti-stats">
         <div className="stat-label">TODAY'S STATS</div>
         <div className="cti-stat-row">
