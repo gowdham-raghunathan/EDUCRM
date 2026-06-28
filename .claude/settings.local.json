@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\Gowtham\\\\Desktop\\\\ERP\" -Recurse -Force)",
+      "Bash(Select-Object FullName)"
+    ]
+  }
+}
